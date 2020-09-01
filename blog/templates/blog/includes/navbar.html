@@ -2,6 +2,9 @@
 <nav>
   <div class="nav-wrapper white">
       <a href="/" class="brand-logo black-text" style="margin-left: 8px;font-family: 'Bangers';"> BLOG4ALL </a>
+
+      {% include 'blog/includes/sidenav.html' %}
+
       <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><i class="material-icons prefix black-text">search</i>
           <li><form method="GET" style="padding-top: 10px;padding-left: 2px" action="/search/">

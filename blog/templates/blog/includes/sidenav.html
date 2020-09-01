@@ -1,0 +1,16 @@
+<ul id="slide-out" class="sidenav" style="left:0px">
+    <li><a href="/" class="black-text" style="margin: 28px;font-family: 'Bangers';font-size: 200%"> BLOG4ALL</a></li>
+    <li><form method="GET" action="/search/"  style="padding-top: 10px;padding-left: 2px;height: 10%">
+          <input name="q" type="search" placeholder="search" style="font-size: 16px">
+        </form></li>
+  {% if user.is_authenticated %}
+    <li><a href="{% url 'blog:profile' user.username %}" class="black-text">{{user.username}}</a></li>
+    <li><a href="/logout" class="black-text">Logout</a></li>
+  {% else %}
+    <li><a href="/login" class="black-text">Login</a></li>
+    <li><a href="/register" class="black-text">Register</a></li>
+  {% endif %}
+  
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
+      
