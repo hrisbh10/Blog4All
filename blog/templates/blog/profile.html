@@ -10,7 +10,7 @@
   {% if user == profile %}
 
     <h3>Welcome, {{user.first_name}} {{user.last_name}}</h3> 
-    <p class = "right">Want to write a blog, <a href="/addblog" target="popup"><b>click</b></a> here!</p>
+    <p class = "right">Want to write a blog, <a href="{% url 'blog:addblog' %}" target="__blank"><b>click</b></a> here!</p>
   <br><br>
   {% endif %}
   

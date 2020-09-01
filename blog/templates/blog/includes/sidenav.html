@@ -5,11 +5,12 @@
         </form></li>
   {% if user.is_authenticated %}
     <li><a href="{% url 'blog:profile' user.username %}" class="black-text">{{user.username}}</a></li>
-    <li><a href="{% url 'blog:addblog' %}" class="black-text">Add Blog</a></li>
-    <li><a href="/logout" class="black-text">Logout</a></li>
+    <li><a href="{% url 'blog:addblog' %}" target="__blank" class="black-text">Add Blog</a></li>
+    <li><a href="{% url 'blog:logout' %}" class="black-text">Logout</a></li>
   {% else %}
-    <li><a href="/login" class="black-text">Login</a></li>
-    <li><a href="/register" class="black-text">Register</a></li>
+    <li><a href="{% url 'blog:login' %}" class="black-text">Add Blog</a></li>
+    <li><a href="{% url 'blog:login' %}" class="black-text">Login</a></li>
+    <li><a href="{% url 'blog:register' %}" class="black-text">Register</a></li>
   {% endif %}
   
 </ul>

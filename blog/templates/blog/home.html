@@ -10,12 +10,12 @@
     {% for bb in blogs %}
       {% if forloop.last and not user.is_authenticated %}
         <script> 
-          var tutBlog = "<span>How to Blog?</span><a href='blog/{{bb.blog_slug}}'><button class='btn-flat toast-action'>Click Here</button></a>" 
+          var tutBlog = "<span>How to Blog?</span><a href='{% url 'blog:blogpage' bb.blog_slug %}'><button class='btn-flat toast-action'>Click Here</button></a>" 
           M.toast({html: tutBlog,displayLength: "5000"})
         </script>
       {% endif %}
       <div class="col s12 m6">
-        <a href="blog/{{bb.blog_slug}}">
+        <a href="{% url 'blog:blogpage' bb.blog_slug %}">
           <div class="card white-grey darken-2 hoverable">
             <div class="card-content black-text">
               <span class="card-title">{{bb.blog_title}}</span>
