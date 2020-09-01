@@ -1,0 +1,46 @@
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load static %}
+	<!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="{% static 'tinymce/css/prism.css' %}" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet'>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-wrapper white">
+        <a href="/" class="brand-logo black-text" style="margin-left: 8px;font-family: 'Bangers';"> BLOG4ALL </a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><i class="material-icons prefix black-text">search</i>
+            <li><form method="GET" style="padding-top: 10px;padding-left: 2px" action="/search/">
+                  <input name="q" type="search" placeholder="search" style="font-size: 16px">
+                </form>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'blog:profile' user.username %}" class="black-text">{{user.username}}</a></li>
+            <li><a href="/logout" class="black-text">Logout</a></li>
+          {% else %}
+            <li><a href="/login" class="black-text">Login</a></li>
+            <li><a href="/register" class="black-text">Register</a></li>
+          {% endif %}
+        </ul>
+    </div>
+  </nav>
+
+{% include 'blog/includes/messaging.html' %}
+<div class="container">
+	<br>
+	{% block content %}
+	{% endblock %}
+</div>
+
+
+</body>
+<!-- Prism JS -->
+<script src="{% static 'tinymce/js/prism.js' %}"></script>

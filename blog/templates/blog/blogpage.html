@@ -1,0 +1,26 @@
+{% extends 'blog/header.html' %}
+
+{% block title %}
+  {{blog.blog_title}}
+{% endblock %}
+
+{% block content %}
+{% url 'blog:profile' blog.publisher.username as author%}
+  <div class="container">
+    <h2>{{blog.blog_title}}</h2> 
+    <div class="row">
+      <div class="col s6" >
+          <p class = "grey-text" style="font-size: 80%">
+            <strong>{{blog.blog_published|date:'M d, Y'}}</strong>
+          </p>
+          <p style="margin-top: -12px">
+            <strong>by <a href="{{author}}" style="color:black"><u>{{blog.publisher.first_name}} {{blog.publisher.last_name}}</u></a></strong>
+          </p>
+      </div>
+    </div>
+    <p class="flow-text">{{blog.blog_content|safe}}</p>
+  </div>
+
+{% endblock %}
+
+

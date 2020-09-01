@@ -1,0 +1,43 @@
+{% extends 'blog/header.html' %}
+
+{% block title %}
+  Profile - {{profile.username}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  {% if user == profile %}
+
+    <h3>Welcome, {{user.first_name}} {{user.last_name}}</h3> 
+    <p class = "right">Want to write a blog, <a href="/addblog" target="popup"><b>click</b></a> here!</p>
+  <br><br>
+  {% endif %}
+  
+  <h5>Blogs by {{profile.first_name}} {{profile.last_name}}:</h5>
+  <br>
+
+  {% for bb in blogs %}
+    <div class="col s12">
+      <a href="{% url 'blog:blogpage' bb.blog_slug %}">
+        <div class="card white-grey darken-2 hoverable">
+          <div class="card-content black-text">
+            <span class="card-title">{{bb.blog_title}}</span>
+            <p>{{bb.publisher}}</p>
+            <p style="font-size: 80%" class="right">{{bb.blog_published}}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  {% empty %}
+      <br><br>
+      <h3 style="font-weight: lighter;" class="grey-text">
+        Sorry, no blogs by the author available right now. &#128528
+      </h3>
+  {% endfor %}
+
+</div>
+
+{% endblock %}
+
+
