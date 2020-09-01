@@ -8,7 +8,7 @@
 
   <div class="row">
     {% for bb in blogs %}
-      {% if forloop.last %}
+      {% if forloop.last and not user.is_authenticated %}
         <script> 
           var tutBlog = "<span>How to Blog?</span><a href='blog/{{bb.blog_slug}}'><button class='btn-flat toast-action'>Click Here</button></a>" 
           M.toast({html: tutBlog,displayLength: "5000"})

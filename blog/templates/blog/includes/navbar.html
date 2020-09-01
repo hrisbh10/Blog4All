@@ -12,6 +12,7 @@
               </form>
         {% if user.is_authenticated %}
           <li><a href="{% url 'blog:profile' user.username %}" class="black-text">{{user.username}}</a></li>
+          <li><a href="{% url 'blog:addblog' %}" class="black-text">Add Blog</a></li>
           <li><a href="/logout" class="black-text">Logout</a></li>
         {% else %}
           <li><a href="/login" class="black-text">Login</a></li>
