@@ -14,24 +14,7 @@
 
 <body>
 
-<nav>
-    <div class="nav-wrapper white">
-        <a href="/" class="brand-logo black-text" style="margin-left: 8px;font-family: 'Bangers';"> BLOG4ALL </a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><i class="material-icons prefix black-text">search</i>
-            <li><form method="GET" style="padding-top: 10px;padding-left: 2px" action="/search/">
-                  <input name="q" type="search" placeholder="search" style="font-size: 16px">
-                </form>
-          {% if user.is_authenticated %}
-            <li><a href="{% url 'blog:profile' user.username %}" class="black-text">{{user.username}}</a></li>
-            <li><a href="/logout" class="black-text">Logout</a></li>
-          {% else %}
-            <li><a href="/login" class="black-text">Login</a></li>
-            <li><a href="/register" class="black-text">Register</a></li>
-          {% endif %}
-        </ul>
-    </div>
-  </nav>
+{% include 'blog/includes/navbar.html' %}
 
 {% include 'blog/includes/messaging.html' %}
 <div class="container">
@@ -40,6 +23,8 @@
 	{% endblock %}
 </div>
 
+<br>
+{% include 'blog/includes/footer.html' %}
 
 </body>
 <!-- Prism JS -->
