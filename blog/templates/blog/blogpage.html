@@ -17,6 +17,15 @@
             <strong>by <a href="{{author}}" style="color:black"><u>{{blog.publisher.first_name}} {{blog.publisher.last_name}}</u></a></strong>
           </p>
       </div>
+      {% if blog.publisher == request.user %}
+      <div class="col s6" >
+          <p class="right" style="padding-top: 4px">
+              <a href="{% url 'blog:modify' blog.blog_slug %}" style="color:black"><i class="material-icons">edit</i></a>
+              <a class="modal-trigger" href="#del-modal" style="color:black"><i class="material-icons">delete</i></a>    
+          </p>
+      </div>
+      {% include 'blog/includes/delblog.html' %}
+      {% endif %}
     </div>
     <p class="flow-text">{{blog.blog_content|safe}}</p>
   </div>

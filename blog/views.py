@@ -68,7 +68,7 @@ def blogpage(request,single_slug):
 def profile(request,user):
 	try:
 		user = User.objects.filter(username=user).get()
-		matching_blogs = Blog.objects.filter(publisher=user)
+		matching_blogs = Blog.objects.filter(publisher=user).order_by('-blog_published')
 		return render(request,"blog/profile.html",{"profile":user,"blogs":matching_blogs})
 		
 	except User.DoesNotExist:
@@ -83,10 +83,10 @@ def add_blog(request):
 	if request.method == 'POST':
 		form = NewBlogForm(request.POST)
 		if form.is_valid():
-			form.save(request.user)
+			blog = form.save(request.user)
 
 			messages.success(request,"Successfully Created a new blog")
-			return redirect("blog:profile", request.user)
+			return redirect("blog:blogpage", blog.blog_slug)
 		else:
 			messages.error(request,"Some fields may be missing")
 			return render(request,'blog/add_blog.html',{'form':form})
@@ -94,3 +94,36 @@ def add_blog(request):
 
 	form = NewBlogForm()
 	return render(request,'blog/add_blog.html',{'form':form})
+
+def edit_blog(request,single_slug):
+	try:
+		blog = Blog.objects.filter(blog_slug=single_slug).get()
+		if blog.publisher != request.user:
+			messages.error(request,"Login into your account first")
+			return redirect("blog:homepage")
+
+		if request.method == 'POST':
+			form = NewBlogForm(request.POST,instance=blog)
+			if form.is_valid():
+				form.modify()
+				messages.success(request,"Successfully modified your blog")
+				return redirect("blog:blogpage", blog.blog_slug)
+
+			else:
+				messages.error(request,"Unable to process your request")
+				return render(request,'blog/add_blog.html',{'form':form})
+
+
+		form = NewBlogForm(instance=blog)
+		return render(request,'blog/add_blog.html',{'form':form})
+
+	except Blog.DoesNotExist:
+		messages.error(request, "Blog Not Found")
+		return redirect("blog:homepage")
+
+def delete(request,id):
+	blog = Blog.objects.get(id=id)
+	user = blog.publisher;
+	blog.delete()
+
+	return redirect("blog:profile",user)

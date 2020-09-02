@@ -10,3 +10,10 @@
     <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
   </div>
 </div>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	    var Modalelem = document.querySelector('.modal');
+	    var instance = M.Modal.init(Modalelem);
+	    instance.open();
+	});
+</script>

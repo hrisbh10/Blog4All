@@ -37,6 +37,11 @@ class NewBlogForm(forms.ModelForm):
 			blog.save()
 		return blog
 
+	def modify(self,commit=True):
+		blog = super(NewBlogForm,self).save(commit=commit)
+		
+		return blog
+
 
 
 	

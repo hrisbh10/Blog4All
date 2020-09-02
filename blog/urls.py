@@ -25,6 +25,8 @@ urlpatterns = [
 	path("login/",views.login_request,name="login"),
 	path("logout/",views.logout_request,name="logout"),
     path('blog/<single_slug>/',views.blogpage,name="blogpage"),
+    path('blog/<single_slug>/edit',views.edit_blog,name="modify"),
+    path('blog/<id>/delete',views.delete,name="delete"),
     path('profile/<user>/',views.profile,name="profile"),
     path('addblog/',views.add_blog,name="addblog"),
 ]
