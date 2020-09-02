@@ -11,9 +11,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+
 </head>
 
 <body>
+
+{% include 'blog/includes/infomodal.html' %}
+
 
 {% include 'blog/includes/navbar.html' %}
 
@@ -33,4 +37,9 @@
 <script src="{% static 'tinymce/js/prism.js' %}"></script>
 <script >
    M.AutoInit();
+  document.addEventListener('DOMContentLoaded', function () {
+      var Modalelem = document.querySelector('.modal');
+      var instance = M.Modal.init(Modalelem);
+      instance.open();
+  });
 </script>
