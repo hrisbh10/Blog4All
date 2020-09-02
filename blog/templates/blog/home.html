@@ -10,12 +10,6 @@
   {% include 'blog/includes/infomodal.html' %}
   <div class="row">
     {% for bb in blogs %}
-      {% if forloop.last and not user.is_authenticated %}
-        <script> 
-          var tutBlog = "<span>How to Blog?</span><a href='{% url 'blog:blogpage' bb.blog_slug %}'><button class='btn-flat toast-action'>Click Here</button></a>" 
-          M.toast({html: tutBlog,displayLength: "5000"})
-        </script>
-      {% endif %}
       <div class="col s12">
         <a href="{% url 'blog:blogpage' bb.blog_slug %}">
           <div class="card white-grey darken-2 hoverable">
