@@ -4,8 +4,10 @@
   Blog4All - Home
 {% endblock %}
 
-{% block content %}
 
+
+{% block content %}
+  {% include 'blog/includes/infomodal.html' %}
   <div class="row">
     {% for bb in blogs %}
       {% if forloop.last and not user.is_authenticated %}
