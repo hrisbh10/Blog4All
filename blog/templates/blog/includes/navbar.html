@@ -2,23 +2,15 @@
 <nav>
   <div class="nav-wrapper white">
       <a href="/" class="brand-logo black-text" style="margin-left: 8px;font-family: 'Bangers';"> BLOG4ALL </a>
-
-      {% include 'blog/includes/sidenav.html' %}
+      <ul id="slide-out" class="sidenav" style="left:0px">
+        <li><a href="/" class="black-text" style="margin: 22px;font-family: 'Bangers';font-size: 350%"> BLOG4ALL</a></li>
+        {% include 'blog/includes/navcontents.html' %}
+      </ul>
+      <a href="#" data-target="slide-out" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
 
       <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><i class="material-icons prefix black-text">search</i>
-          <li><form method="GET" style="padding-top: 10px;padding-left: 2px" action="{% url 'blog:search' %}">
-                <input name="q" type="search" placeholder="search" style="font-size: 16px">
-              </form>
-        {% if user.is_authenticated %}
-          <li><a href="{% url 'blog:profile' user.username %}" class="black-text">{{user.username}}</a></li>
-          <li><a href="{% url 'blog:addblog' %}" target="__blank" class="black-text">Add Blog</a></li>
-          <li><a href="{% url 'blog:logout' %}" class="black-text">Logout</a></li>
-        {% else %}
-          <li><a href="{% url 'blog:login' %}" class="black-text">Add Blog</a></li>
-          <li><a href="{% url 'blog:login' %}" class="black-text">Login</a></li>
-          <li><a href="{% url 'blog:register' %}" class="black-text">Register</a></li>
-        {% endif %}
+          {% include 'blog/includes/navcontents.html' %}
       </ul>
   </div>
 </nav>
