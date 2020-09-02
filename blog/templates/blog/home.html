@@ -16,7 +16,7 @@
           M.toast({html: tutBlog,displayLength: "5000"})
         </script>
       {% endif %}
-      <div class="col s12 m6">
+      <div class="col s12">
         <a href="{% url 'blog:blogpage' bb.blog_slug %}">
           <div class="card white-grey darken-2 hoverable">
             <div class="card-content black-text">
@@ -31,7 +31,7 @@
       <h1 style="font-weight: lighter">Sorry, no blogs available right now.</h1>
     {% endfor %}
   </div>
-  
+
 {% endblock %}
 
 
