@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Blog
 from .forms import NewUserForm, NewBlogForm
+from django.db.models import Q
 
 # Create your views here.
 
@@ -127,3 +128,18 @@ def delete(request,id):
 	blog.delete()
 
 	return redirect("blog:profile",user)
+
+def search(request):
+	query = ""
+	if ('q' in request.GET) and (request.GET['q'].strip()):
+		query = request.GET['q'].strip()
+		matching_blogs = Blog.objects.filter(
+							Q(blog_title__icontains=query)|
+							Q(blog_content__icontains=query)|
+							Q(publisher__username__icontains=query)|
+							Q(publisher__first_name__icontains=query)|
+							Q(publisher__last_name__icontains=query)
+						)
+		return render(request, 'blog/search.html',{"query":query,"blogs":matching_blogs.all()})
+
+	return HttpResponse("Enter valid search keyword")

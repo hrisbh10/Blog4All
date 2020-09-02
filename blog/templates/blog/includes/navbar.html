@@ -7,7 +7,7 @@
 
       <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><i class="material-icons prefix black-text">search</i>
-          <li><form method="GET" style="padding-top: 10px;padding-left: 2px" action="/search/">
+          <li><form method="GET" style="padding-top: 10px;padding-left: 2px" action="{% url 'blog:search' %}">
                 <input name="q" type="search" placeholder="search" style="font-size: 16px">
               </form>
         {% if user.is_authenticated %}

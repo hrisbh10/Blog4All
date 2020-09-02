@@ -1,21 +1,13 @@
 {% extends 'blog/header.html' %}
 
 {% block title %}
-  Blog4All - Home
+  Search Results - {{query}}
 {% endblock %}
 
-
-
 {% block content %}
-  {% include 'blog/includes/infomodal.html' %}
-  <div class="row">
+	<h1>Search Results for {{query}}</h1>
+	<div class="row">
     {% for bb in blogs %}
-      {% if forloop.last and not user.is_authenticated %}
-        <script> 
-          var tutBlog = "<span>How to Blog?</span><a href='{% url 'blog:blogpage' bb.blog_slug %}'><button class='btn-flat toast-action'>Click Here</button></a>" 
-          M.toast({html: tutBlog,displayLength: "5000"})
-        </script>
-      {% endif %}
       <div class="col s12">
         <a href="{% url 'blog:blogpage' bb.blog_slug %}">
           <div class="card white-grey darken-2 hoverable">
@@ -28,10 +20,7 @@
         </a>
       </div>
     {% empty %}
-      <h2 style="font-weight: lighter">Sorry, no blogs available right now. &#128528</h2>
+      <h2 style="font-weight: lighter">Sorry, Can't find blogs with this keyword. &#128528</h2>
     {% endfor %}
   </div>
-
 {% endblock %}
-
-

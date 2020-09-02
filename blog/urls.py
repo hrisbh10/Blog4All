@@ -29,4 +29,5 @@ urlpatterns = [
     path('blog/<id>/delete',views.delete,name="delete"),
     path('profile/<user>/',views.profile,name="profile"),
     path('addblog/',views.add_blog,name="addblog"),
+    path('search/',views.search,name="search"),
 ]
