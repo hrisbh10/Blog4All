@@ -3,7 +3,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
 from random import randint
-# Create your models here.
+# Create your models for Blog4All-HR here.
 
 class Blog(models.Model):
 	blog_title = models.CharField(max_length=200)
