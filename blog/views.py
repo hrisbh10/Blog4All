@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 
 def pageObject(request,blogs):
-	num_blogs = 7
+	num_blogs = 2
 	page = request.GET.get('page')
 	paginator = Paginator(blogs,num_blogs) #number of blogs per page
 	try:
@@ -27,6 +27,8 @@ def pageObject(request,blogs):
 def homepage(request):
 	blogs = Blog.objects.order_by('-blog_published')
 	page_obj = pageObject(request,blogs)
+	if page_obj.number == 1:
+		return render(request,"blog/home.html",{"blogs":page_obj,"info":blogs.last()})
 	return render(request,"blog/home.html",{"blogs":page_obj})
 
 def register(request):
@@ -156,7 +158,7 @@ def search(request):
 							Q(publisher__first_name__icontains=query)|
 							Q(publisher__last_name__icontains=query)
 						)
-		page_obj = pageObject(request,matching_blogs.all())
+		page_obj = pageObject(request,matching_blogs.order_by('-blog_published'))
 		return render(request, 'blog/search.html',{"query":query,"blogs":page_obj})
 
 	return HttpResponse("Enter valid search keyword")

@@ -5,23 +5,9 @@
 {% endblock %}
 
 {% block content %}
-	<h1>Search Results for {{query}}</h1>
+	<h2>Search Results for {{query}}:</h2>
 	<div class="row">
-    {% for bb in blogs %}
-      <div class="col s12">
-        <a href="{% url 'blog:blogpage' bb.blog_slug %}">
-          <div class="card white-grey darken-2 hoverable">
-            <div class="card-content black-text">
-              <span class="card-title">{{bb.blog_title}}</span>
-              <p>by {{bb.publisher}}</p>
-              <p style="font-size: 80%">{{bb.blog_published}}</p>
-            </div>
-          </div>
-        </a>
-      </div>
-    {% empty %}
-      <h2 style="font-weight: lighter">Sorry, Can't find blogs with this keyword. &#128528</h2>
-    {% endfor %}
-  </div>
+    	{% include 'blog/includes/bloglist.html' %}
+  	</div>
   {% include 'blog/includes/pagination.html' %}
 {% endblock %}

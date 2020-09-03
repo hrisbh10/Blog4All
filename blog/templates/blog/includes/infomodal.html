@@ -1,5 +1,5 @@
 <!-- Modal for information -->
-{% if not user.is_authenticated %}
+{% if info and not user.is_authenticated %}
 <!--HR-->
 <div class="modal">
   <div class="modal-content">
@@ -9,7 +9,7 @@
     <p><b>The content on this site is unregulated and the administrators don't align themselves to any of the blogs shared by the other users.</b> Continuing on this site, you agree that you will use this site for good and won't hold the administrator liable for the content on the site.</p>
   </div>
   <div class="modal-footer">
-    <a href="{% url 'blog:blogpage' blogs.last.blog_slug %}">
+    <a href="{% url 'blog:blogpage' info.blog_slug %}">
       <button class='btn-flat toast-action'>How To Blog?</button>
     </a>
     <a href="#!" class="modal-close waves-effect waves-green btn-flat">Okay</a>
