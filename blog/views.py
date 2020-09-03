@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 
 def pageObject(request,blogs):
-	num_blogs = 2
+	num_blogs = 7
 	page = request.GET.get('page')
 	paginator = Paginator(blogs,num_blogs) #number of blogs per page
 	try:
