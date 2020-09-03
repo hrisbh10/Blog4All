@@ -7,7 +7,6 @@
 
 
 {% block content %}
-  {% include 'blog/includes/infomodal.html' %}
   <div class="row">
     {% for bb in blogs %}
       <div class="col s12">
@@ -25,6 +24,9 @@
       <h2 style="font-weight: lighter">Sorry, no blogs available right now. &#128528</h2>
     {% endfor %}
   </div>
+  {% include 'blog/includes/pagination.html' %}
+  
+
 <!--HR-->
 {% endblock %}
 

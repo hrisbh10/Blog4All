@@ -1,0 +1,22 @@
+{% load search_url %}
+{% if blogs.has_other_pages %}
+  <ul class="pagination">
+    {% if not blogs.has_previous %}
+      <li class="disabled"><i class="material-icons">chevron_left</i></li>
+    {% else %}
+      <li><a href="?{% url_replace page=blogs.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
+    {% endif %}
+    {% for pg_num in blogs.paginator.page_range %}
+      {% if blogs.number == pg_num %}
+        <li class="active black"><a href="#!">{{pg_num}}</a></li>
+      {% else %}
+        <li class="waves-effect"><a href="?{% url_replace page=pg_num %}">{{pg_num}}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if not blogs.has_next %}
+      <li class="disabled"><i class="material-icons">chevron_right</i></li>
+    {% else %}
+      <li><a href="?{% url_replace page=blogs.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
+    {% endif %}
+  </ul>
+{% endif %}     

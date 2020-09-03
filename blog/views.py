@@ -7,11 +7,27 @@ from django.contrib.auth.models import User
 from .models import Blog
 from .forms import NewUserForm, NewBlogForm
 from django.db.models import Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
+def pageObject(request,blogs):
+	num_blogs = 7
+	page = request.GET.get('page')
+	paginator = Paginator(blogs,num_blogs) #number of blogs per page
+	try:
+		page_obj = paginator.page(page)
+	except PageNotAnInteger:
+		page_obj = paginator.page(1)
+	except EmptyPage:
+		page_obj = paginator.page(paginator.num_pages)
+
+	return page_obj
+
 def homepage(request):
-	return render(request,"blog/home.html",{"blogs":Blog.objects.order_by('-blog_published')})
+	blogs = Blog.objects.order_by('-blog_published')
+	page_obj = pageObject(request,blogs)
+	return render(request,"blog/home.html",{"blogs":page_obj})
 
 def register(request):
 	if request.method == 'POST':
@@ -140,6 +156,7 @@ def search(request):
 							Q(publisher__first_name__icontains=query)|
 							Q(publisher__last_name__icontains=query)
 						)
-		return render(request, 'blog/search.html',{"query":query,"blogs":matching_blogs.all()})
+		page_obj = pageObject(request,matching_blogs.all())
+		return render(request, 'blog/search.html',{"query":query,"blogs":page_obj})
 
 	return HttpResponse("Enter valid search keyword")
