@@ -50,15 +50,24 @@ def register(request):
 	return render(request,'blog/register.html',{"form":form})
 
 def login_request(request):
+	if request.user.is_authenticated:
+		messages.info(request,"You are already logged in!")
+		return redirect("blog:homepage")
+
 	if request.method == 'POST':
 		form = AuthenticationForm(request,request.POST)
 		if form.is_valid():
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
 			user = authenticate(username=username,password=password)
+
 			if user is not None:
 				login(request,user)
 				messages.success(request,f"Successfully logged in as {username}")
+
+				if request.GET['next']:
+					return redirect(request.GET['next'])
+
 				return redirect("blog:homepage")
 			else:
 				messages.error(request,"Invalid username or password")
@@ -73,6 +82,8 @@ def login_request(request):
 def logout_request(request):
 	logout(request)
 	messages.info(request,"Logout Successful")
+	if request.GET['next']:
+		return redirect(request.GET['next'])
 	return redirect("blog:homepage")
 
 def blogpage(request,single_slug):
@@ -117,7 +128,7 @@ def add_blog(request):
 def edit_blog(request,single_slug):
 	try:
 		blog = Blog.objects.filter(blog_slug=single_slug).get()
-		if blog.publisher != request.user:
+		if (not request.user.is_authenticated) or (blog.publisher != request.user):
 			messages.error(request,"Login into your account first")
 			return redirect("blog:homepage")
 
@@ -142,6 +153,9 @@ def edit_blog(request,single_slug):
 
 def delete(request,id):
 	blog = Blog.objects.get(id=id)
+	if (not request.user.is_authenticated) or (blog.publisher != request.user):
+		messages.error(request,"Invalid Action")
+		return redirect("blog:homepage")
 	user = blog.publisher;
 	blog.delete()
 
