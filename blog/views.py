@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -87,23 +87,14 @@ def logout_request(request):
 	return redirect("blog:homepage")
 
 def blogpage(request,single_slug):
-	try:
-		blog = Blog.objects.filter(blog_slug=single_slug).get()
-	except Blog.DoesNotExist:
-		messages.error(request, "Blog Not Found")
-		return redirect("blog:homepage")
+	blog = get_object_or_404(Blog,blog_slug=single_slug)
 	return render(request,"blog/blogpage.html",{"blog":blog})
 
 
 def profile(request,user):
-	try:
-		user = User.objects.filter(username=user).get()
-		matching_blogs = Blog.objects.filter(publisher=user).order_by('-blog_published')
-		return render(request,"blog/profile.html",{"profile":user,"blogs":matching_blogs})
-		
-	except User.DoesNotExist:
-		messages.error(request, "Invalid Username")
-		return redirect("blog:homepage")
+	user = get_object_or_404(User,username=user)
+	matching_blogs = Blog.objects.filter(publisher=user).order_by('-blog_published')
+	return render(request,"blog/profile.html",{"profile":user,"blogs":matching_blogs})
 
 def add_blog(request):
 	if not request.user.is_authenticated:
@@ -126,33 +117,28 @@ def add_blog(request):
 	return render(request,'blog/add_blog.html',{'form':form})
 
 def edit_blog(request,single_slug):
-	try:
-		blog = Blog.objects.filter(blog_slug=single_slug).get()
-		if (not request.user.is_authenticated) or (blog.publisher != request.user):
-			messages.error(request,"Login into your account first")
-			return redirect("blog:homepage")
-
-		if request.method == 'POST':
-			form = NewBlogForm(request.POST,instance=blog)
-			if form.is_valid():
-				form.modify()
-				messages.success(request,"Successfully modified your blog")
-				return redirect("blog:blogpage", blog.blog_slug)
-
-			else:
-				messages.error(request,"Unable to process your request")
-				return render(request,'blog/add_blog.html',{'form':form})
-
-
-		form = NewBlogForm(instance=blog)
-		return render(request,'blog/add_blog.html',{'form':form})
-
-	except Blog.DoesNotExist:
-		messages.error(request, "Blog Not Found")
+	blog = get_object_or_404(Blog,blog_slug=single_slug)
+	if (not request.user.is_authenticated) or (blog.publisher != request.user):
+		messages.error(request,"Login into your account first")
 		return redirect("blog:homepage")
 
+	if request.method == 'POST':
+		form = NewBlogForm(request.POST,instance=blog)
+		if form.is_valid():
+			form.modify()
+			messages.success(request,"Successfully modified your blog")
+			return redirect("blog:blogpage", blog.blog_slug)
+
+		else:
+			messages.error(request,"Unable to process your request")
+			return render(request,'blog/add_blog.html',{'form':form})
+
+
+	form = NewBlogForm(instance=blog)
+	return render(request,'blog/add_blog.html',{'form':form})
+
 def delete(request,id):
-	blog = Blog.objects.get(id=id)
+	blog = get_object_or_404(Blog,id=id)
 	if (not request.user.is_authenticated) or (blog.publisher != request.user):
 		messages.error(request,"Invalid Action")
 		return redirect("blog:homepage")
