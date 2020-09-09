@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Blog
 from .forms import NewUserForm, NewBlogForm
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -30,7 +30,7 @@ def register(request):
 
 def login_request(request):
 	if request.user.is_authenticated:
-		messages.info(request,"You are already logged in!")
+		messages.info(request,"You are already logged in! Logout first")
 		return redirect("blog:homepage")
 
 	if request.method == 'POST':
@@ -65,6 +65,8 @@ def logout_request(request):
 		return redirect(request.GET['next'])
 	return redirect("blog:homepage")
 
+
+@login_required(login_url="blog:login")
 def add_blog(request):
 	if not request.user.is_authenticated:
 		messages.error(request,"Login into your account first")
@@ -85,9 +87,10 @@ def add_blog(request):
 	form = NewBlogForm()
 	return render(request,'blog/add_blog.html',{'form':form})
 
+@login_required(login_url="blog:login")
 def edit_blog(request,single_slug):
 	blog = get_object_or_404(Blog,blog_slug=single_slug)
-	if (not request.user.is_authenticated) or (blog.publisher != request.user):
+	if (blog.publisher != request.user):
 		messages.error(request,"Login into your account first")
 		return redirect("blog:homepage")
 
@@ -106,9 +109,10 @@ def edit_blog(request,single_slug):
 	form = NewBlogForm(instance=blog)
 	return render(request,'blog/add_blog.html',{'form':form})
 
+@login_required(login_url="blog:login")
 def delete(request,id):
 	blog = get_object_or_404(Blog,id=id)
-	if (not request.user.is_authenticated) or (blog.publisher != request.user):
+	if (blog.publisher != request.user):
 		messages.error(request,"Invalid Action")
 		return redirect("blog:homepage")
 	user = blog.publisher;
