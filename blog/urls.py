@@ -15,19 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from . import views,listviews
 
 app_name = "blog"
 
 urlpatterns = [
-	path("",views.homepage,name="homepage"),
+	path("",listviews.homepage,name="homepage"),
 	path("register/",views.register,name="register"),
 	path("login/",views.login_request,name="login"),
 	path("logout/",views.logout_request,name="logout"),
-    path('blog/<single_slug>/',views.blogpage,name="blogpage"),
+    path('blog/<single_slug>/',listviews.blogpage,name="blogpage"),
     path('blog/<single_slug>/edit',views.edit_blog,name="modify"),
     path('blog/<id>/delete',views.delete,name="delete"),
-    path('profile/<user>/',views.profile,name="profile"),
+    path('profile/<user>/',listviews.profile,name="profile"),
     path('addblog/',views.add_blog,name="addblog"),
-    path('search/',views.search,name="search"),
+    path('search/',listviews.search,name="search"),
 ]
