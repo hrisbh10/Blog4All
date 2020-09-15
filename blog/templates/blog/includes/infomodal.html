@@ -16,10 +16,16 @@
   </div>
 </div>
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
-	    var Modalelem = document.querySelector('.modal');
-	    var instance = M.Modal.init(Modalelem);
-	    instance.open();
-	});
+  document.addEventListener('DOMContentLoaded', function () {
+      var no_display = localStorage.getItem('no_display');
+      if (no_display === 'true') {
+      return;
+            }
+      var Modalelem = document.querySelector('.modal');
+      var instance = M.Modal.init(Modalelem);
+      instance.open();
+
+      localStorage.setItem('no_display', 'true');
+  });
 </script>
 {% endif %}
