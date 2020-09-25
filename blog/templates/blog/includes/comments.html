@@ -1,0 +1,31 @@
+<div class="collection">
+    {% for comms in comments %}
+        <div class="collection-item" id="{{comms.main.id}}">
+            <b><span>{{comms.main.blogger}}</span></b>
+            <span style="margin-left: 8px;font-size: 80%">{{comms.main.time_published|date:"Y M-d H:i"}}</span>
+            <br>
+            <p>{{comms.main.expression}}</p>
+            <button value="{{comms.main.id}}" onclick="reply(this.value)" class="btn-small btn-flat white" style="padding-left: 0px">Reply<i class="material-icons right black-text">reply</i></button>
+            <form id="com{{comms.main.id}}" style="display: none" method="POST" action="{% url 'blog:add-comment' blog.slug comms.main.id %}">
+              {% csrf_token %}
+              <input type="text" name="comment" placeholder="Your comment">
+              <button type = 'submit' class = "btn-small btn-flat white" style="padding-left: 0px">Comment<i class="material-icons right black-text">send</i></button>
+            </form>
+            {% if comms.child %}
+                {% with comments=comms.child %}
+                   {% include "blog/includes/comments.html" %}
+                {% endwith %}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+<script>
+    function reply(commentid) {
+      var x = document.getElementById("com"+commentid);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    } 
+</script>

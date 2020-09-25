@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Blog
+from .models import Blog,Comment
 from .forms import NewUserForm, NewBlogForm
 from django.contrib.auth.decorators import login_required
 
@@ -78,7 +78,7 @@ def add_blog(request):
 			blog = form.save(request.user)
 
 			messages.success(request,"Successfully Created a new blog")
-			return redirect("blog:blogpage", blog.blog_slug)
+			return redirect("blog:blogpage", blog.slug)
 		else:
 			messages.error(request,"Some fields may be missing")
 			return render(request,'blog/add_blog.html',{'form':form})
@@ -89,7 +89,7 @@ def add_blog(request):
 
 @login_required(login_url="blog:login")
 def edit_blog(request,single_slug):
-	blog = get_object_or_404(Blog,blog_slug=single_slug)
+	blog = get_object_or_404(Blog,slug=single_slug)
 	if (blog.publisher != request.user):
 		messages.error(request,"Login into your account first")
 		return redirect("blog:homepage")
@@ -99,7 +99,7 @@ def edit_blog(request,single_slug):
 		if form.is_valid():
 			form.modify()
 			messages.success(request,"Successfully modified your blog")
-			return redirect("blog:blogpage", blog.blog_slug)
+			return redirect("blog:blogpage", blog.slug)
 
 		else:
 			messages.error(request,"Unable to process your request")
@@ -119,3 +119,21 @@ def delete(request,id):
 	blog.delete()
 
 	return redirect("blog:profile",user)
+
+@login_required(login_url="blog:login")
+def comment(request,single_slug,commentid):
+	blogger = request.user
+	expression = request.POST['comment']
+	if not expression.strip():
+		return redirect("blog:blogpage",single_slug)
+	parent = None
+	if (len(single_slug) == len(commentid)) and (single_slug == commentid):
+		parent = get_object_or_404(Blog,slug=single_slug)
+	else:
+		parent = get_object_or_404(Comment,id=commentid)
+	
+	comment = Comment(blogger=blogger,expression=expression,parent=parent)
+	comment.save()
+	_redirect = redirect("blog:blogpage",single_slug).url
+	
+	return redirect(f"{_redirect}#{comment.id}")

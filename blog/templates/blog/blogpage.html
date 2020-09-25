@@ -6,7 +6,7 @@
 
 {% block content %}
 {% url 'blog:profile' blog.publisher.username as author%}
-  <div class="container">
+  
     <h2>{{blog.blog_title}}</h2> 
     <div class="row">
       <div class="col s6" >
@@ -20,7 +20,7 @@
       {% if blog.publisher == request.user %}
       <div class="col s6" >
           <p class="right" style="padding-top: 4px">
-              <a href="{% url 'blog:modify' blog.blog_slug %}?next={{request.path}}" style="color:black"><i class="material-icons">edit</i></a>
+              <a href="{% url 'blog:modify' blog.slug %}?next={{request.path}}" style="color:black"><i class="material-icons">edit</i></a>
               <a class="modal-trigger" href="#del-modal" style="color:black"><i class="material-icons">delete</i></a>    
           </p>
       </div>
@@ -28,7 +28,19 @@
       {% endif %}
     </div>
     <p class="flow-text">{{blog.blog_content|safe}}</p>
-  </div>
+    <br>
+  
+<hr>
+<h5 id="comments">Comments</h5>
+<form method="POST" action="{% url 'blog:add-comment' blog.slug blog.slug %}">
+  {% csrf_token %}
+  <input type="text" name="comment" placeholder="Enter your comment">
+  <button type = 'submit' class = "btn-small btn-flat white" style="padding-left: 0px">Comment<i class="material-icons right black-text">send</i></button>
+</form>
+<br>
+{% if comments %}
+  {% include "blog/includes/comments.html" %}
+{% endif %}
 
 {% endblock %}
 

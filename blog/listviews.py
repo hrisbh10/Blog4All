@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.models import User
-from .models import Blog
+from .models import Blog,Comment
 
 def pageObject(request,blogs):
 	num_blogs = 7
@@ -20,8 +20,9 @@ def homepage(request):
 	return render(request,"blog/home.html",{"blogs":page_obj})
 
 def blogpage(request,single_slug):
-	blog = get_object_or_404(Blog,blog_slug=single_slug)
-	return render(request,"blog/blogpage.html",{"blog":blog})
+	blog = get_object_or_404(Blog,slug=single_slug)
+	comments = blog.get_comments()
+	return render(request,"blog/blogpage.html",{"blog":blog,"comments":comments})
 
 def profile(request,user):
 	user = get_object_or_404(User,username=user)

@@ -1,7 +1,7 @@
 {% for bb in blogs %}
   <div class="col s12">
-    <a href="{% url 'blog:blogpage' bb.blog_slug %}">
-      <div class="card white-grey darken-2 hoverable">
+    <a href="{% url 'blog:blogpage' bb.slug %}">
+      <div class="card darken-2 hoverable">
         <div class="card-content black-text">
           <span class="card-title">{{bb.blog_title}}</span>
           <p>{{bb.publisher}}</p>

@@ -21,13 +21,14 @@ app_name = "blog"
 
 urlpatterns = [
 	path("",listviews.homepage,name="homepage"),
-	path("register/",views.register,name="register"),
-	path("login/",views.login_request,name="login"),
-	path("logout/",views.logout_request,name="logout"),
-    path('blog/<single_slug>/',listviews.blogpage,name="blogpage"),
+	path("register",views.register,name="register"),
+	path("login",views.login_request,name="login"),
+	path("logout",views.logout_request,name="logout"),
+    path('blog/<single_slug>',listviews.blogpage,name="blogpage"),
+    path('blog/<single_slug>/<commentid>',views.comment,name="add-comment"),
     path('blog/<single_slug>/edit',views.edit_blog,name="modify"),
     path('blog/<id>/delete',views.delete,name="delete"),
-    path('profile/<user>/',listviews.profile,name="profile"),
-    path('addblog/',views.add_blog,name="addblog"),
-    path('search/',listviews.search,name="search"),
+    path('profile/<user>',listviews.profile,name="profile"),
+    path('addblog',views.add_blog,name="addblog"),
+    path('search',listviews.search,name="search"),
 ]
