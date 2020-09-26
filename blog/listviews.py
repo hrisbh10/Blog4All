@@ -21,7 +21,9 @@ def homepage(request):
 
 def blogpage(request,single_slug):
 	blog = get_object_or_404(Blog,blog_slug=single_slug)
-	comments = blog.main_thread.get_comments()
+	comments = None
+	if blog.main_thread is not None:
+		comments = blog.main_thread.get_comments()
 	return render(request,"blog/blogpage.html",{"blog":blog,"comments":comments})
 
 def profile(request,user):
