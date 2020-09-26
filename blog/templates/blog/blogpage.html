@@ -20,7 +20,7 @@
       {% if blog.publisher == request.user %}
       <div class="col s6" >
           <p class="right" style="padding-top: 4px">
-              <a href="{% url 'blog:modify' blog.slug %}?next={{request.path}}" style="color:black"><i class="material-icons">edit</i></a>
+              <a href="{% url 'blog:modify' blog.blog_slug %}?next={{request.path}}" style="color:black"><i class="material-icons">edit</i></a>
               <a class="modal-trigger" href="#del-modal" style="color:black"><i class="material-icons">delete</i></a>    
           </p>
       </div>
@@ -32,7 +32,7 @@
   
 <hr>
 <h5 id="comments">Comments</h5>
-<form method="POST" action="{% url 'blog:add-comment' blog.slug blog.slug %}">
+<form method="POST" action="{% url 'blog:add-comment' blog.blog_slug blog.blog_slug %}">
   {% csrf_token %}
   <input type="text" name="comment" placeholder="Enter your comment">
   <button type = 'submit' class = "btn-small btn-flat white" style="padding-left: 0px">Comment<i class="material-icons right black-text">send</i></button>
@@ -41,7 +41,17 @@
 {% if comments %}
   {% include "blog/includes/comments.html" %}
 {% endif %}
-
+<script>
+    function reply(commentid) {
+      var x = document.getElementById("com"+commentid);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+        x.elements['comment'].focus();
+      } else {
+        x.style.display = "none";
+      }
+    } 
+</script>
 {% endblock %}
 
 

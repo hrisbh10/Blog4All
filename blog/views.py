@@ -78,7 +78,7 @@ def add_blog(request):
 			blog = form.save(request.user)
 
 			messages.success(request,"Successfully Created a new blog")
-			return redirect("blog:blogpage", blog.slug)
+			return redirect("blog:blogpage", blog.blog_slug)
 		else:
 			messages.error(request,"Some fields may be missing")
 			return render(request,'blog/add_blog.html',{'form':form})
@@ -89,7 +89,7 @@ def add_blog(request):
 
 @login_required(login_url="blog:login")
 def edit_blog(request,single_slug):
-	blog = get_object_or_404(Blog,slug=single_slug)
+	blog = get_object_or_404(Blog,blog_slug=single_slug)
 	if (blog.publisher != request.user):
 		messages.error(request,"Login into your account first")
 		return redirect("blog:homepage")
@@ -99,7 +99,7 @@ def edit_blog(request,single_slug):
 		if form.is_valid():
 			form.modify()
 			messages.success(request,"Successfully modified your blog")
-			return redirect("blog:blogpage", blog.slug)
+			return redirect("blog:blogpage", blog.blog_slug)
 
 		else:
 			messages.error(request,"Unable to process your request")
@@ -116,6 +116,7 @@ def delete(request,id):
 		messages.error(request,"Invalid Action")
 		return redirect("blog:homepage")
 	user = blog.publisher;
+	blog.main_thread.delete();
 	blog.delete()
 
 	return redirect("blog:profile",user)
@@ -128,7 +129,7 @@ def comment(request,single_slug,commentid):
 		return redirect("blog:blogpage",single_slug)
 	parent = None
 	if (len(single_slug) == len(commentid)) and (single_slug == commentid):
-		parent = get_object_or_404(Blog,slug=single_slug)
+		parent = get_object_or_404(Blog,blog_slug=single_slug).main_thread
 	else:
 		parent = get_object_or_404(Comment,id=commentid)
 	

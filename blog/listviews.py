@@ -20,8 +20,8 @@ def homepage(request):
 	return render(request,"blog/home.html",{"blogs":page_obj})
 
 def blogpage(request,single_slug):
-	blog = get_object_or_404(Blog,slug=single_slug)
-	comments = blog.get_comments()
+	blog = get_object_or_404(Blog,blog_slug=single_slug)
+	comments = blog.main_thread.get_comments()
 	return render(request,"blog/blogpage.html",{"blog":blog,"comments":comments})
 
 def profile(request,user):

@@ -6,7 +6,7 @@
             <br>
             <p>{{comms.main.expression}}</p>
             <button value="{{comms.main.id}}" onclick="reply(this.value)" class="btn-small btn-flat white" style="padding-left: 0px">Reply<i class="material-icons right black-text">reply</i></button>
-            <form id="com{{comms.main.id}}" style="display: none" method="POST" action="{% url 'blog:add-comment' blog.slug comms.main.id %}">
+            <form id="com{{comms.main.id}}" style="display: none" method="POST" action="{% url 'blog:add-comment' blog.blog_slug comms.main.id %}">
               {% csrf_token %}
               <input type="text" name="comment" placeholder="Your comment">
               <button type = 'submit' class = "btn-small btn-flat white" style="padding-left: 0px">Comment<i class="material-icons right black-text">send</i></button>
@@ -19,13 +19,3 @@
         </div>
     {% endfor %}
 </div>
-<script>
-    function reply(commentid) {
-      var x = document.getElementById("com"+commentid);
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
-    } 
-</script>
