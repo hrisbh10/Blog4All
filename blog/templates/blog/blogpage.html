@@ -32,14 +32,20 @@
   
 <hr>
 <h5 id="comments">Comments</h5>
+{% if user.is_authenticated %}
 <form method="POST" action="{% url 'blog:add-comment' blog.blog_slug blog.blog_slug %}">
   {% csrf_token %}
   <input type="text" name="comment" placeholder="Enter your comment">
   <button type = 'submit' class = "btn-small btn-flat white" style="padding-left: 0px">Comment<i class="material-icons right black-text">send</i></button>
 </form>
+{% else %}
+<p>Login to Comment or Reply.</p>
+{% endif %}
 <br>
 {% if comments %}
   {% include "blog/includes/comments.html" %}
+{% else %}
+  <h6>Be the first to comment!!</h6>
 {% endif %}
 <script>
     function reply(commentid) {

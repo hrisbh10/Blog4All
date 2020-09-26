@@ -5,7 +5,15 @@
             <span style="margin-left: 8px;font-size: 80%">{{comms.main.time_published|date:"Y M-d H:i"}}</span>
             <br>
             <p>{{comms.main.expression}}</p>
-            <button value="{{comms.main.id}}" onclick="reply(this.value)" class="btn-small btn-flat white" style="padding-left: 0px">Reply<i class="material-icons right black-text">reply</i></button>
+            {% if user.is_authenticated %}
+            <a class="black-text">
+            {% else %}
+            <a href="{% url 'blog:login' %}?next={{request.path}}">
+            {% endif %}
+                <button value="{{comms.main.id}}" onclick="reply(this.value)" class="btn-small btn-flat white" style="padding-left: 0px">
+                    Reply<i class="material-icons right black-text">reply</i>
+                </button>
+            </a>
             <form id="com{{comms.main.id}}" style="display: none" method="POST" action="{% url 'blog:add-comment' blog.blog_slug comms.main.id %}">
               {% csrf_token %}
               <input type="text" name="comment" placeholder="Your comment">
